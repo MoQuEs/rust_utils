@@ -8,6 +8,7 @@ extern crate log;
 pub mod config;
 pub mod dotenv;
 pub mod ignore;
+pub mod log_result;
 
 #[macro_use]
 pub mod macros;
