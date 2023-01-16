@@ -543,6 +543,7 @@ dependencies = [
  "config",
  "dotenv",
  "envmnt",
+ "itertools",
  "log",
  "mockall",
  "pretty_assertions",

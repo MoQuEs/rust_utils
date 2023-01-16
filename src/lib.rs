@@ -12,3 +12,4 @@ pub mod config;
 pub mod dotenv;
 pub mod ignore;
 pub mod log_result;
+pub mod diff;
