@@ -1,13 +1,13 @@
 [package]
-name = "utils"
+name = "rust_utils"
 version = "0.1.0"
 authors = ["Sebastian Kaźmierczak <moques93@gmail.com>"]
 edition = "2021"
 
 [dependencies]
 config = "0.13.3"
-serde = {version = "1.0.116", features = ["derive"]}
-log = "0.4.11"
+serde = {version = "1.0.152", features = ["derive"]}
+log = "0.4.17"
 dotenv = "0.15.0"
 envmnt = "0.10.4"
 
