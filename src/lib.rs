@@ -5,10 +5,10 @@ extern crate pretty_assertions;
 #[macro_use]
 extern crate log;
 
+#[macro_use]
+pub mod macros;
+
 pub mod config;
 pub mod dotenv;
 pub mod ignore;
 pub mod log_result;
-
-#[macro_use]
-pub mod macros;

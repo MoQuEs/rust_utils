@@ -1,17 +1,20 @@
-use std::path::PathBuf;
+use std::path::{Path};
+use config::File;
 use serde::{Deserialize, Serialize};
 
 #[derive(Default, Serialize, Deserialize, Clone, Debug)]
 struct Config {}
 
-pub fn from_env<T>() -> T {
-    let mut cfg = config::Config::new();
-    cfg.merge(config::Environment::new()).unwrap();
-    cfg.try_into().unwrap()
+pub fn from_env() -> config::Config {
+    config::Config::builder()
+        .add_source(config::Environment::default())
+        .build()
+        .unwrap()
 }
 
-pub fn from_toml<T>(file_name: &str) -> T {
-    let mut cfg = config::Config::new();
-    cfg.merge(config::FileSourceFile::new(PathBuf::from(file_name))).unwrap();
-    cfg.try_into().unwrap()
+pub fn from_tom(file_name: &str) -> config::Config {
+    config::Config::builder()
+        .add_source(File::from(Path::new(file_name)))
+        .build()
+        .unwrap()
 }
