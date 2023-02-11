@@ -12,7 +12,7 @@ pub fn from_env() -> config::Config {
         .unwrap()
 }
 
-pub fn from_tom(file_name: &str) -> config::Config {
+pub fn from_file(file_name: &str) -> config::Config {
     config::Config::builder()
         .add_source(File::from(Path::new(file_name)))
         .build()
