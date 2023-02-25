@@ -9,6 +9,12 @@ macro_rules! transparent_struct {
         $(#[$derive])*
         pub struct $name($variant);
 
+        impl $name {
+            pub fn new(value: $variant) -> Self {
+                Self(value)
+            }
+        }
+
         impl std::ops::Deref for $name {
             type Target = $variant;
 
@@ -46,8 +52,8 @@ mod tests {
     transparent_struct!(#[derive(Clone, Debug, PartialEq)] FooDerive(String));
 
     #[test]
-    fn create_single() {
-        let foo_1 = FooString(String::from("test"));
+    fn impl_new() {
+        let foo_1 = FooString::new(String::from("test"));
         assert_eq!(foo_1.deref(), &String::from("test"));
     }
 
@@ -65,7 +71,7 @@ mod tests {
 
     #[test]
     fn create_vec() {
-        let foo_1 = FooVec(vec![String::from("test")]);
+        let foo_1 = FooVec::new(vec![String::from("test")]);
         assert_eq!(foo_1.deref(), &vec![String::from("test")]);
     }
 
@@ -83,7 +89,7 @@ mod tests {
 
     #[test]
     fn derive() {
-        let foo_1 = FooDerive(String::from("test"));
+        let foo_1 = FooDerive::new(String::from("test"));
         assert_eq!(foo_1.clone(), foo_1); // Clone, Debug, PartialEq
     }
 }
