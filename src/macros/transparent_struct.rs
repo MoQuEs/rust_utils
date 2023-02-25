@@ -2,7 +2,11 @@
 
 #[macro_export]
 macro_rules! transparent_struct {
-    ($name:ident($variant:ty)) => {
+    (
+        $(#[$derive:meta])*
+        $name:ident($variant:ty)
+    ) => {
+        $(#[$derive])*
         pub struct $name($variant);
 
         impl std::ops::Deref for $name {
@@ -39,6 +43,7 @@ mod tests {
 
     transparent_struct!(FooString(String));
     transparent_struct!(FooVec(Vec<String>));
+    transparent_struct!(#[derive(Clone, Debug, PartialEq)] FooDerive(String));
 
     #[test]
     fn create_single() {
@@ -74,5 +79,11 @@ mod tests {
     fn into_vec() {
         let foo_1: Vec<String> = FooVec::from(vec![String::from("test")]).into();
         assert_eq!(foo_1.deref(), vec![String::from("test")]);
+    }
+
+    #[test]
+    fn derive() {
+        let foo_1 = FooDerive(String::from("test"));
+        assert_eq!(foo_1.clone(), foo_1); // Clone, Debug, PartialEq
     }
 }
