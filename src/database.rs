@@ -24,6 +24,29 @@ pub trait Escape {
 
 impl<T: AsRef<str>> Escape for T {
     fn escape(&self) -> String {
-        self.as_ref().replace('\'', "")
+        self.as_ref().replace('\'', "\\\'")
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn call_normalize() {
+        let value = "a b";
+        assert_eq!(value.normalize(), String::from("a_b"));
+    }
+
+    #[test]
+    fn call_slugify() {
+        let value = "a b";
+        assert_eq!(value.slugify("."), String::from("a.b"));
+    }
+
+    #[test]
+    fn call_escape() {
+        let value = "a'b";
+        assert_eq!(value.escape(), String::from("a\\\'b"));
     }
 }

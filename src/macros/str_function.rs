@@ -14,6 +14,6 @@ mod tests {
 
     #[test]
     fn call_function() {
-        assert_eq!(self::Foo(), "Foo");
+        assert_eq!(Foo(), "Foo");
     }
 }

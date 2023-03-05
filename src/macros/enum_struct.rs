@@ -22,6 +22,7 @@ mod tests {
 
     #[test]
     fn create() {
-        assert_eq!(Foo::Bar.to_string(), "Bar");
+        assert_eq!(Foo::Bar.to_string(), "Foo.Bar");
+        assert_eq!(Foo::Bas.to_string(), "Foo.Bas");
     }
 }

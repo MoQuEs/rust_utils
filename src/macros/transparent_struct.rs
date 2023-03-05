@@ -49,7 +49,10 @@ mod tests {
 
     transparent_struct!(FooString(String));
     transparent_struct!(FooVec(Vec<String>));
-    transparent_struct!(#[derive(Clone, Debug, PartialEq)] FooDerive(String));
+    transparent_struct!(
+        #[derive(Clone, Debug, PartialEq)]
+        FooDerive(String)
+    );
 
     #[test]
     fn impl_new() {
