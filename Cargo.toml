@@ -1,17 +1,18 @@
 [package]
 name = "rust_utils"
-version = "0.3.0"
+version = "0.4.0"
 authors = ["Sebastian Kaźmierczak <moques93@gmail.com>"]
 edition = "2021"
 
 [dependencies]
-config = { version = "0.13.3", default-features = false }
-serde = {version = "^1.0.152", default-features = false, features = ["derive"]}
-log = { version = "^0.4.17", default-features = false }
-dotenv = { version = "^0.15.0", default-features = false }
-envmnt = { version = "^0.10.4", default-features = false }
-itertools = { version = "^0.10.5", default-features = false }
-slugify = { version = "^0.1.0", default-features = false }
-num = { version = "^0.4.0", default-features = false }
+config = { version = "0.13", default-features = false }
+serde = { version = "1.0", default-features = false, features = ["derive"] }
+serde_json = { version = "1.0", default-features = false, features = ["std"] }
+log = { version = "0.4", default-features = false }
+dotenv = { version = "0.15", default-features = false }
+envmnt = { version = "0.10", default-features = false }
+itertools = { version = "0.10", default-features = false }
+slugify = { version = "0.1", default-features = false }
+num = { version = "0.4", default-features = false }
 
 [build-dependencies]
