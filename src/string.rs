@@ -1,9 +1,14 @@
-use regex::Regex;
-
 pub fn mask_if_email(potential_email: impl AsRef<str>) -> String {
-    let re = Regex::new(r"^(.)(.*)(@.*)$").unwrap();
-    if re.is_match(potential_email.as_ref()) {
-        return re.replace(potential_email.as_ref(), "$1*****$3").to_string();
+    if potential_email.as_ref().contains('@') {
+        let mut parts = potential_email.as_ref().split('@');
+
+        let mut new_string = String::new();
+        new_string.push_str(&parts.next().unwrap()[0..1]);
+        new_string.push_str("***OMITTED***");
+        new_string.push('@');
+        new_string.push_str(parts.next().unwrap());
+
+        return new_string;
     }
 
     potential_email.as_ref().to_string()
@@ -16,7 +21,7 @@ mod tests {
     #[test]
     fn is_email() {
         let value = mask_if_email("asd@a.tsa");
-        assert_eq!(value, "a*****@a.tsa");
+        assert_eq!(value, "a***OMITTED***@a.tsa");
     }
 
     #[test]
