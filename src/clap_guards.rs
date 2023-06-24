@@ -1,9 +1,9 @@
 use num::FromPrimitive;
 
 pub fn positive_number<T: Ord + std::str::FromStr + FromPrimitive>(
-    s: &str,
+    s: impl AsRef<str>,
 ) -> Result<T, String> {
-    let number: T = s.parse().map_err(|_| format!("`{s}` isn't a number"))?;
+    let number: T = s.as_ref().parse().map_err(|_| format!("`{}` isn't a number", s.as_ref()))?;
 
     if number > FromPrimitive::from_usize(0).unwrap() {
         Ok(number)

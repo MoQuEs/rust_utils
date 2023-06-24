@@ -1,17 +1,32 @@
 #[macro_use]
 pub mod macros;
 
-#[macro_use]
-pub mod diff;
-
-pub mod config;
-pub mod dotenv;
-pub mod ignore;
-pub mod log_result;
-pub mod log_option;
-pub mod database;
+#[cfg(feature = "clap_guards")]
 pub mod clap_guards;
-pub mod unwrap_ref;
-pub mod serde_utils;
-pub mod vec_utils;
+
+#[cfg(feature = "config")]
+pub mod config;
+
+#[cfg(feature = "database")]
+pub mod database;
+
+#[cfg(feature = "dotenv")]
+pub mod dotenv;
+
+#[cfg(feature = "ignore")]
+pub mod ignore;
+
+#[cfg(feature = "log")]
 pub mod log;
+
+#[cfg(feature = "serde_utils")]
+pub mod serde_utils;
+
+#[cfg(feature = "string")]
+pub mod string;
+
+#[cfg(feature = "unwrap_ref")]
+pub mod unwrap_ref;
+
+#[cfg(feature = "vec_utils")]
+pub mod vec_utils;

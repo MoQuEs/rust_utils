@@ -14,9 +14,10 @@ pub fn option_option<'de, D, T>(deserializer: D) -> Result<Option<T>, D::Error>
 
 #[cfg(test)]
 mod tests {
+    use serde::Serialize;
     use super::*;
 
-    #[derive(Deserialize, PartialEq, Debug)]
+    #[derive(Serialize, Deserialize, Default, PartialEq, Debug)]
     pub struct Test {
         pub a: String,
 
