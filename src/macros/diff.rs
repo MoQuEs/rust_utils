@@ -57,7 +57,7 @@ diff_type!(diff_u8, u8);
 
 #[cfg(test)]
 mod tests {
-    use crate::diff::*;
+    use super::*;
 
     #[test]
     fn same() {

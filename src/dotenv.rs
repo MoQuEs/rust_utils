@@ -1,4 +1,3 @@
-use crate::ignore::Ignore;
 use envmnt::load_file;
 use std::env::{current_dir, var};
 use std::fs::metadata;
@@ -16,7 +15,7 @@ pub fn load_dotenv_file(filename: &str) -> Result<(), std::io::Error> {
         match metadata(&candidate) {
             Ok(candidate_metadata) if candidate_metadata.is_file() => {
                 if let Some(candidate_filepath) = candidate.to_str() {
-                    if let Ok(_) = load_file(candidate_filepath) {
+                    if load_file(candidate_filepath).is_ok() {
                         println!("Load .env file: {}", &candidate_filepath);
                         load_one = true;
                     }
@@ -40,11 +39,11 @@ pub fn load_dotenv_file(filename: &str) -> Result<(), std::io::Error> {
     Ok(())
 }
 
-pub fn get_var(env_var: &str) -> Result<String, ()> {
+pub fn get_var(env_var: impl AsRef<str>) -> Result<String, ()> {
     let mut variable = String::with_capacity(50);
 
     let mut load_one = false;
-    for custom_env_var in [env_var.to_uppercase(), env_var.to_lowercase()].iter() {
+    for custom_env_var in [env_var.as_ref().to_uppercase(), env_var.as_ref().to_lowercase()].iter() {
         if let Ok(env_variable) = var(custom_env_var) {
             variable = env_variable;
             load_one = true;
@@ -53,7 +52,7 @@ pub fn get_var(env_var: &str) -> Result<String, ()> {
     }
 
     if !load_one {
-        println!("Can't get environment value: {}", &env_var);
+        println!("Can't get environment value: {}", env_var.as_ref());
         return Err(());
     }
 
@@ -65,14 +64,13 @@ pub fn configure_dotenv() {
     let docker = get_var("docker").unwrap_or_else(|_| String::from("0")) == "1";
 
     load_dotenv_file(".env").unwrap();
-    load_dotenv_file(if docker { ".env.docker.local" } else { ".env.local" }).ignore();
-    load_dotenv_file(&*format!(".env.{}", env)).ignore();
-    load_dotenv_file(&*if docker {
+    let _ = load_dotenv_file(if docker { ".env.docker.local" } else { ".env.local" });
+    let _ = load_dotenv_file(&format!(".env.{}", env));
+    let _ = load_dotenv_file(&if docker {
         format!(".env.{}.docker.local", env)
     } else {
         format!(".env.{}.local", env)
-    })
-    .ignore();
+    });
 
     println!("Env: {}", &env);
     println!("Docker: {}", docker);
