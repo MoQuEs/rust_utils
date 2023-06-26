@@ -19,6 +19,9 @@ pub mod ignore;
 #[cfg(feature = "log")]
 pub mod log;
 
+#[cfg(feature = "map")]
+pub mod map;
+
 #[cfg(feature = "serde_utils")]
 pub mod serde_utils;
 

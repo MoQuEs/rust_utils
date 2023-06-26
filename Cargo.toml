@@ -1,6 +1,6 @@
 [package]
 name = "rust_utils"
-version = "0.7.1"
+version = "0.8.0"
 authors = ["Sebastian Kaźmierczak <moques93@gmail.com>"]
 edition = "2021"
 resolver = "2"
@@ -34,6 +34,7 @@ diff = []
 dotenv = ["dep:envmnt"]
 ignore = []
 log = ["dep:log"]
+map = []
 serde_utils = ["enable-serde_json"]
 string = []
 unwrap_ref = []
