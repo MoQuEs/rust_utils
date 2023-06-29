@@ -1,6 +1,6 @@
-use std::path::{Path};
 use config::File;
 use serde::{Deserialize, Serialize};
+use std::path::Path;
 
 #[derive(Default, Serialize, Deserialize, Clone, Debug)]
 struct Config {}

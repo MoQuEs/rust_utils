@@ -55,16 +55,8 @@ impl<T> Log for Option<T> {
 
 impl<T> LogU<T> for Option<T> {
     fn log_u(self, level: log::Level, target: &str, message: impl AsRef<str>) -> T {
-        if self.is_none() {
-            log::log!(
-                target: target,
-                level,
-                "Empty option; Message: {}",
-                message.as_ref()
-            );
-        }
-
-        self.expect(message.as_ref())
+        self.log(level, target, message.as_ref())
+            .unwrap_or_else(|| panic!("{}", message.as_ref().to_string()))
     }
 
     fn log_error_u(self, target: &str, message: impl AsRef<str>) -> T {
@@ -126,17 +118,8 @@ impl<T, E: Debug> Log for Result<T, E> {
 
 impl<T, E: Debug> LogU<T> for Result<T, E> {
     fn log_u(self, level: log::Level, target: &str, message: impl AsRef<str>) -> T {
-        self.map_err(|err| {
-            log::log!(
-                target: target,
-                level,
-                "Message: {}; Error: {:?};",
-                message.as_ref(),
-                err
-            );
-
-            err
-        }).expect(message.as_ref())
+        self.log(level, target, message.as_ref())
+            .unwrap_or_else(|_| panic!("{}", message.as_ref().to_string()))
     }
 
     fn log_error_u(self, target: &str, message: impl AsRef<str>) -> T {

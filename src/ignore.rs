@@ -20,7 +20,8 @@ impl<T, E: Display> PrintAndIgnore for Result<T, E> {
         self.map_err(|err| {
             println!("Error: {}", &err);
             err
-        }).ignore();
+        })
+        .ignore();
     }
 }
 
@@ -30,6 +31,7 @@ impl<T, E: Display> PrintAndLog for Result<T, E> {
         self.map_err(|err| {
             log::error!("Error: {}", &err);
             err
-        }).ignore();
+        })
+        .ignore();
     }
 }

@@ -1,6 +1,5 @@
 use std::cmp::min;
 
-
 macro_rules! diff_type {
     ($name:ident, $type:ty) => {
         pub fn $name<
@@ -47,13 +46,11 @@ macro_rules! diff_type {
 
             diff
         }
-    }
+    };
 }
 
 diff_type!(diff_str, str);
 diff_type!(diff_u8, u8);
-
-
 
 #[cfg(test)]
 mod tests {
