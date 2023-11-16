@@ -1,19 +1,21 @@
 [package]
 name = "rust_utils"
-version = "0.9.0"
+version = "0.10.0"
 authors = ["Sebastian Kaźmierczak <moques93@gmail.com>"]
 edition = "2021"
 resolver = "2"
 
 [dependencies]
+askama = { version = "0.12.1", default-features = false, optional = true }
 config = { version = "0.13.3", default-features = false, optional = true }
-serde = { version = "1.0.162", default-features = false, optional = true }
-serde_json = { version = "1.0.96", default-features = false, optional = true }
-log = { version = "0.4.17", default-features = false, optional = true }
+serde = { version = "1.0.186", default-features = false, optional = true }
+serde_json = { version = "1.0.105", default-features = false, optional = true }
+log = { version = "0.4.19", default-features = false, optional = true }
 envmnt = { version = "0.10.4", default-features = false, optional = true }
-itertools = { version = "0.10.5", default-features = false, optional = true }
+itertools = { version = "0.12.0", default-features = false, optional = true }
 slugify = { version = "0.1.0", default-features = false, optional = true }
-num = { version = "0.4.0", default-features = false, optional = true }
+num = { version = "0.4.1", default-features = false, optional = true }
+tokio = { version = "1.34.0", default-features = false, optional = true }
 
 [features]
 default = []
@@ -39,7 +41,12 @@ serde_utils = ["enable-serde_json"]
 string = []
 unwrap_ref = []
 vec_utils = []
+file = ["enable-serde_json"]
+file-async = ["enable-toko-fs"]
+askama_filters = ["enable-askama"]
 
 enable-serde = ["serde/derive"]
+enable-toko-fs = ["tokio/fs"]
 enable-serde_json = ["enable-serde", "serde_json/std"]
+enable-askama = ["dep:askama"]
 

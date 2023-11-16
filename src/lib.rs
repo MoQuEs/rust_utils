@@ -33,3 +33,9 @@ pub mod unwrap_ref;
 
 #[cfg(feature = "vec_utils")]
 pub mod vec_utils;
+
+#[cfg(feature = "file")]
+pub mod file;
+
+#[cfg(feature = "askama_filters")]
+mod askama_filters;
