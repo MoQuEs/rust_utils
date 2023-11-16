@@ -1,6 +1,6 @@
 [package]
 name = "rust_utils"
-version = "0.10.1"
+version = "0.11.0"
 authors = ["Sebastian Kaźmierczak <moques93@gmail.com>"]
 edition = "2021"
 resolver = "2"

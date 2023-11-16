@@ -1,5 +1,3 @@
-use slugify::slugify;
-
 pub fn mask_if_email(potential_email: impl AsRef<str>) -> String {
     if potential_email.as_ref().contains('@') {
         let mut parts = potential_email.as_ref().split('@');
@@ -17,8 +15,6 @@ pub fn mask_if_email(potential_email: impl AsRef<str>) -> String {
 }
 
 pub fn slugify_for_filename(text: impl AsRef<str>) -> String {
-    slugify!(text.as_ref(), "_")
-        .replace(['<', '>', ':', '"', '/', '\\', '?', '*'], "_")
     // '<>:"/\|?*' are not allowed in Windows filenames
     text.as_ref()
         .replace(['<', '>', ':', '"', '/', '\\', '?', '*', ' '], "_")
