@@ -1,6 +1,6 @@
 [package]
 name = "rust_utils"
-version = "0.10.0"
+version = "0.10.1"
 authors = ["Sebastian Kaźmierczak <moques93@gmail.com>"]
 edition = "2021"
 resolver = "2"
@@ -18,6 +18,24 @@ num = { version = "0.4.1", default-features = false, optional = true }
 tokio = { version = "1.34.0", default-features = false, optional = true }
 
 [features]
+full = [
+    "macros",
+    "clap_guards",
+    "config",
+    "database",
+    "diff",
+    "dotenv",
+    "ignore",
+    "log",
+    "map",
+    "serde_utils",
+    "string",
+    "unwrap_ref",
+    "vec_utils",
+    "file",
+    "file-async",
+    "askama_filters",
+]
 default = []
 macros = [
     "macros-enum_struct",
