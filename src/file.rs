@@ -12,20 +12,24 @@ pub async fn load_json_async<T: DeserializeOwned>(path: impl AsRef<str>) -> std:
 #[cfg(feature = "file-async")]
 pub async fn save_json_async<T: Serialize>(path: impl AsRef<str>, data: T) -> std::io::Result<()> {
     let json = to_string(&data)?;
-    tokio::fs::write(path.as_ref(), json).await?;
-
-    Ok(())
+    tokio::fs::write(path.as_ref(), json).await
 }
 
-fn load_json<T: DeserializeOwned>(path: impl AsRef<str>) -> std::io::Result<T> {
+pub fn load_json<T: DeserializeOwned>(path: impl AsRef<str>) -> std::io::Result<T> {
     let data = std::fs::read_to_string(path.as_ref())?;
 
     Ok(from_str::<T>(&data)?)
 }
 
-fn save_json<T: Serialize>(path: impl AsRef<str>, data: T) -> std::io::Result<()> {
+pub fn save_json<T: Serialize>(path: impl AsRef<str>, data: T) -> std::io::Result<()> {
     let json = to_string(&data)?;
-    std::fs::write(path.as_ref(), json)?;
+    std::fs::write(path.as_ref(), json)
+}
 
-    Ok(())
+pub fn load_file(path: impl AsRef<str>) -> std::io::Result<String> {
+    std::fs::read_to_string(path.as_ref())
+}
+
+pub fn save_file(path: impl AsRef<str>, data: impl AsRef<[u8]>) -> std::io::Result<()> {
+    std::fs::write(path.as_ref(), data)
 }
