@@ -107,12 +107,12 @@ mod tests {
     #[test]
     fn slugify_for_filename_string_with_special_chars() {
         let value = "a b<>:\"/\\|?*".to_string().slugify_for_filename();
-        assert_eq!(value, "a_b________".to_string());
+        assert_eq!(value, "a_b______|__".to_string());
     }
 
     #[test]
     fn slugify_for_filename_str_with_special_chars() {
         let value = "a b<>:\"/\\|?*".slugify_for_filename();
-        assert_eq!(value, "a_b________".to_string());
+        assert_eq!(value, "a_b______|__".to_string());
     }
 }

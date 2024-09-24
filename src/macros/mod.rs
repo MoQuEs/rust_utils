@@ -13,3 +13,7 @@ pub mod transparent_struct;
 #[macro_use]
 #[cfg(feature = "macros-diff")]
 pub mod diff;
+
+#[macro_use]
+#[cfg(feature = "macros-log")]
+pub mod log;

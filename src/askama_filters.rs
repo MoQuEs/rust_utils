@@ -23,7 +23,7 @@ mod tests {
     #[test]
     fn call_remove_non_az_09_characters_and_to_lowercase_with_special_chars() {
         let value = remove_non_az_09_characters_and_to_lowercase("a b<>:\"/\\|?*");
-        assert_eq!(value, String::from("a_b__________"));
+        assert_eq!(value, String::from("a_b_________"));
     }
 
     #[test]
