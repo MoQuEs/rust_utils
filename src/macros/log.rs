@@ -1,276 +1,234 @@
+pub use log;
+
 #[macro_export]
-macro_rules! res_log {
+macro_rules! result_log {
     ($code:expr; $e:ident; target: $target:expr, $lvl:ident, $($arg:tt),+) => {
-        match $code {
-            Ok(val) => Ok(val),
-            Err($e) => {
-                log::log!(target: $target, log::Level::$lvl, $($arg),+);
-                Err($e)
-            }
-        }
+        $code.inspect_err(|$e| $crate::macros::log::log::log!(target: $target, $crate::macros::log::log::Level::$lvl, $($arg),+))
     };
 
     ($code:expr; target: $target:expr, $lvl:ident, $($arg:tt),+) => {
-        match $code {
-            Ok(val) => Ok(val),
-            Err(err) => {
-                log::log!(target: $target, log::Level::$lvl, $($arg),+);
-                Err(err)
-            }
-        }
+        $code.inspect_err(|_| $crate::macros::log::log::log!(target: $target, $crate::macros::log::log::Level::$lvl, $($arg),+))
     };
 
     ($code:expr; target: $target:expr, $lvl:ident) => {
-        match $code {
-            Ok(val) => Ok(val),
-            Err(err) => {
-                log::log!(target: $target, log::Level::$lvl, "Error: {err:?}");
-                Err(err)
-            }
-        }
+        $code.inspect_err(|err| $crate::macros::log::log::log!(target: $target, $crate::macros::log::log::Level::$lvl, "Error: {err:?}"))
     };
 
     ($code:expr; $e:ident; $lvl:ident, $($arg:tt),+) => {
-        match $code {
-            Ok(val) => Ok(val),
-            Err($e) => {
-                log::log!(log::Level::$lvl, $($arg),+);
-                Err($e)
-            }
-        }
+        $code.inspect_err(|$e| $crate::macros::log::log::log!($crate::macros::log::log::Level::$lvl, $($arg),+))
     };
 
     ($code:expr; $lvl:ident, $($arg:tt),+) => {
-        match $code {
-            Ok(val) => Ok(val),
-            Err(err) => {
-                log::log!(log::Level::$lvl, $($arg),+);
-                Err(err)
-            }
-        }
+        $code.inspect_err(|_| $crate::macros::log::log::log!($crate::macros::log::log::Level::$lvl, $($arg),+))
     };
 
     ($code:expr; $lvl:ident) => {
-        match $code {
-            Ok(val) => Ok(val),
-            Err(err) => {
-                log::log!(log::Level::$lvl, "Error: {err:?}");
-                Err(err)
-            }
-        }
+        $code.inspect_err(|err| $crate::macros::log::log::log!($crate::macros::log::log::Level::$lvl, "Error: {err:?}"))
     };
 }
 
 #[macro_export]
-macro_rules! opt_log {
+macro_rules! option_log {
     ($code:expr; target: $target:expr, $lvl:ident, $($arg:tt),+) => {
-        match $code {
-            Some(val) => Some(val),
-            None => {
-                log::log!(target: $target, log::Level::$lvl, $($arg),+);
-                None
-            }
+        if $code.is_none() {
+            $crate::macros::log::log::log!(target: $target, $crate::macros::log::log::Level::$lvl, $($arg),+);
         }
     };
 
     ($code:expr; $lvl:ident, $($arg:tt),+) => {
-        match $code {
-            Some(val) => Some(val),
-            None => {
-                log::log!(log::Level::$lvl, $($arg),+);
-                None
-            }
+        if $code.is_none() {
+            $crate::macros::log::log::log!($crate::macros::log::log::Level::$lvl, $($arg),+);
         }
     };
 }
 
 #[macro_export]
-macro_rules! res_error {
+macro_rules! result_error {
     ($code:expr; $e:ident; target: $target:expr, $($arg:tt),+) => {
-        res_log!($code; $e; target: $target, Error, $($arg),+)
+        $crate::result_log!($code; $e; target: $target, Error, $($arg),+)
     };
 
     ($code:expr; target: $target:expr, $($arg:tt),+) => {
-        res_log!($code; target: $target, Error, $($arg),+)
+        $crate::result_log!($code; target: $target, Error, $($arg),+)
     };
 
     ($code:expr; target: $target:expr) => {
-        res_log!($code; target: $target, Error)
+        $crate::result_log!($code; target: $target, Error)
     };
 
     ($code:expr; $e:ident; $($arg:tt),+) => {
-        res_log!($code; $e; Error, $($arg),+)
+        $crate::result_log!($code; $e; Error, $($arg),+)
     };
 
     ($code:expr; $($arg:tt),+) => {
-        res_log!($code; Error, $($arg),+)
+        $crate::result_log!($code; Error, $($arg),+)
     };
 
     ($code:expr;) => {
-        res_log!($code; Error)
+        $crate::result_log!($code; Error)
     };
 }
 
 #[macro_export]
-macro_rules! opt_error {
+macro_rules! option_error {
     ($code:expr; target: $target:expr, $($arg:tt),+) => {
-        opt_log!($code; target: $target, Error, $($arg),+)
+        $crate::option_log!($code; target: $target, Error, $($arg),+)
     };
 
     ($code:expr; $($arg:tt),+) => {
-        opt_log!($code; Error, $($arg),+)
+        $crate::option_log!($code; Error, $($arg),+)
     };
 }
 
 #[macro_export]
-macro_rules! res_warn {
+macro_rules! result_warn {
     ($code:expr; $e:ident; target: $target:expr, $($arg:tt),+) => {
-        res_log!($code; $e; target: $target, Warn, $($arg),+)
+        $crate::result_log!($code; $e; target: $target, Warn, $($arg),+)
     };
 
     ($code:expr; target: $target:expr, $($arg:tt),+) => {
-        res_log!($code; target: $target, Warn, $($arg),+)
+        $crate::result_log!($code; target: $target, Warn, $($arg),+)
     };
 
     ($code:expr; target: $target:expr) => {
-        res_log!($code; target: $target, Warn)
+        $crate::result_log!($code; target: $target, Warn)
     };
 
     ($code:expr; $e:ident; $($arg:tt),+) => {
-        res_log!($code; $e; Warn, $($arg),+)
+        $crate::result_log!($code; $e; Warn, $($arg),+)
     };
 
     ($code:expr; $($arg:tt),+) => {
-        res_log!($code; Warn, $($arg),+)
+        $crate::result_log!($code; Warn, $($arg),+)
     };
 
     ($code:expr;) => {
-        res_log!($code; Warn)
+        $crate::result_log!($code; Warn)
     };
 }
 
 #[macro_export]
-macro_rules! opt_warn {
+macro_rules! option_warn {
     ($code:expr; target: $target:expr, $($arg:tt),+) => {
-        opt_log!($code; target: $target, Warn, $($arg),+)
+        $crate::option_log!($code; target: $target, Warn, $($arg),+)
     };
 
     ($code:expr; $($arg:tt),+) => {
-        opt_log!($code; Warn, $($arg),+)
+        $crate::option_log!($code; Warn, $($arg),+)
     };
 }
 
 #[macro_export]
-macro_rules! res_info {
+macro_rules! result_info {
     ($code:expr; $e:ident; target: $target:expr, $($arg:tt),+) => {
-        res_log!($code; $e; target: $target, Info, $($arg),+)
+        $crate::result_log!($code; $e; target: $target, Info, $($arg),+)
     };
 
     ($code:expr; target: $target:expr, $($arg:tt),+) => {
-        res_log!($code; target: $target, Info, $($arg),+)
+        $crate::result_log!($code; target: $target, Info, $($arg),+)
     };
 
     ($code:expr; target: $target:expr) => {
-        res_log!($code; target: $target, Info)
+        $crate::result_log!($code; target: $target, Info)
     };
 
     ($code:expr; $e:ident; $($arg:tt),+) => {
-        res_log!($code; $e; Info, $($arg),+)
+        $crate::result_log!($code; $e; Info, $($arg),+)
     };
 
     ($code:expr; $($arg:tt),+) => {
-        res_log!($code; Info, $($arg),+)
+        $crate::result_log!($code; Info, $($arg),+)
     };
 
     ($code:expr;) => {
-        res_log!($code; Info)
+        $crate::result_log!($code; Info)
     };
 }
 
 #[macro_export]
-macro_rules! opt_info {
+macro_rules! option_info {
     ($code:expr; target: $target:expr, $($arg:tt),+) => {
-        opt_log!($code; target: $target, Info, $($arg),+)
+        $crate::option_log!($code; target: $target, Info, $($arg),+)
     };
 
     ($code:expr; $($arg:tt),+) => {
-        opt_log!($code; Info, $($arg),+)
+        $crate::option_log!($code; Info, $($arg),+)
     };
 }
 
 #[macro_export]
-macro_rules! res_debug {
+macro_rules! result_debug {
     ($code:expr; $e:ident; target: $target:expr, $($arg:tt),+) => {
-        res_log!($code; $e; target: $target, Debug, $($arg),+)
+        $crate::result_log!($code; $e; target: $target, Debug, $($arg),+)
     };
 
     ($code:expr; target: $target:expr, $($arg:tt),+) => {
-        res_log!($code; target: $target, Debug, $($arg),+)
+        $crate::result_log!($code; target: $target, Debug, $($arg),+)
     };
 
     ($code:expr; target: $target:expr) => {
-        res_log!($code; target: $target, Debug)
+        $crate::result_log!($code; target: $target, Debug)
     };
 
     ($code:expr; $e:ident; $($arg:tt),+) => {
-        res_log!($code; $e; Debug, $($arg),+)
+        $crate::result_log!($code; $e; Debug, $($arg),+)
     };
 
     ($code:expr; $($arg:tt),+) => {
-        res_log!($code; Debug, $($arg),+)
+        $crate::result_log!($code; Debug, $($arg),+)
     };
 
     ($code:expr;) => {
-        res_log!($code; Debug)
+        $crate::result_log!($code; Debug)
     };
 }
 
 #[macro_export]
-macro_rules! opt_debug {
+macro_rules! option_debug {
     ($code:expr; target: $target:expr, $($arg:tt),+) => {
-        opt_log!($code; target: $target, Debug, $($arg),+)
+        $crate::option_log!($code; target: $target, Debug, $($arg),+)
     };
 
     ($code:expr; $($arg:tt),+) => {
-        opt_log!($code; Debug, $($arg),+)
+        $crate::option_log!($code; Debug, $($arg),+)
     };
 }
 
 #[macro_export]
-macro_rules! res_trace {
+macro_rules! result_trace {
     ($code:expr; $e:ident; target: $target:expr, $($arg:tt),+) => {
-        res_log!($code; $e; target: $target, Trace, $($arg),+)
+        $crate::result_log!($code; $e; target: $target, Trace, $($arg),+)
     };
 
     ($code:expr; target: $target:expr, $($arg:tt),+) => {
-        res_log!($code; target: $target, Trace, $($arg),+)
+        $crate::result_log!($code; target: $target, Trace, $($arg),+)
     };
 
     ($code:expr; target: $target:expr) => {
-        res_log!($code; target: $target, Trace)
+        $crate::result_log!($code; target: $target, Trace)
     };
 
     ($code:expr; $e:ident; $($arg:tt),+) => {
-        res_log!($code; $e; Trace, $($arg),+)
+        $crate::result_log!($code; $e; Trace, $($arg),+)
     };
 
     ($code:expr; $($arg:tt),+) => {
-        res_log!($code; Trace, $($arg),+)
+        $crate::result_log!($code; Trace, $($arg),+)
     };
 
     ($code:expr;) => {
-        res_log!($code; Trace)
+        $crate::result_log!($code; Trace)
     };
 }
 
 #[macro_export]
-macro_rules! opt_trace {
+macro_rules! option_trace {
     ($code:expr; target: $target:expr, $($arg:tt),+) => {
-        opt_log!($code; target: $target, Trace, $($arg),+)
+        $crate::option_log!($code; target: $target, Trace, $($arg),+)
     };
 
     ($code:expr; $($arg:tt),+) => {
-        opt_log!($code; Trace, $($arg),+)
+        $crate::option_log!($code; Trace, $($arg),+)
     };
 }
 
@@ -311,38 +269,38 @@ mod test {
 
     macro_rules! test_maker_result {
         ($f:ident) => {
-            let _ = res_error!(
+            let _ = result_error!(
                 $f("a"); err;
                 target: "target",
                 "0 {err}"
             );
 
-            let _ = res_warn!(
+            let _ = result_warn!(
                 $f("b");
                 target: "target",
                 "1"
             );
 
-            let _ = res_info!(
+            let _ = result_info!(
                 $f("c");
                 target: "target"
             );
 
-            let _ = res_debug!(
+            let _ = result_debug!(
                 $f("d"); err;
                 "3 {err}"
             );
 
-            let _ = res_trace!(
+            let _ = result_trace!(
                 $f("e");
                 "4"
             );
 
-            let _ = res_error!(
+            let _ = result_error!(
                 $f("f");
             );
 
-            let _ = res_log!(
+            let _ = result_log!(
                 $f("x"); err;
                 target: "target",
                 Error,
@@ -353,18 +311,18 @@ mod test {
 
     macro_rules! test_maker_option {
         ($f:ident) => {
-            let _ = opt_warn!(
+            let _ = option_warn!(
                 $f("b");
                 target: "target",
                 "1"
             );
 
-            let _ = opt_trace!(
+            let _ = option_trace!(
                 $f("e");
                 "4"
             );
 
-            let _ = opt_log!(
+            let _ = option_log!(
                 $f("x");
                 target: "target",
                 Error,
@@ -374,7 +332,7 @@ mod test {
     }
 
     #[test]
-    fn test_res_ok() {
+    fn test_result_ok() {
         testing_logger::setup();
 
         test_maker_result!(ok);
@@ -385,7 +343,7 @@ mod test {
     }
 
     #[test]
-    fn test_res_err_s() {
+    fn test_result_err_s() {
         testing_logger::setup();
 
         test_maker_result!(err_s);
@@ -417,7 +375,7 @@ mod test {
     }
 
     #[test]
-    fn test_res_err_impl() {
+    fn test_result_err_impl() {
         testing_logger::setup();
 
         test_maker_result!(err_impl);
@@ -449,7 +407,7 @@ mod test {
     }
 
     #[test]
-    fn test_opt_some() {
+    fn test_option_some() {
         testing_logger::setup();
 
         test_maker_option!(some);
@@ -460,7 +418,7 @@ mod test {
     }
 
     #[test]
-    fn test_res_error_err_s() {
+    fn test_result_error_err_s() {
         testing_logger::setup();
 
         test_maker_option!(none);

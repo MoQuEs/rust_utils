@@ -1,16 +1,18 @@
 [package]
 name = "rust_utils"
-version = "0.13.1"
+version = "0.14.0"
 authors = ["<moques93@gmail.com>"]
 edition = "2021"
 resolver = "2"
 
 [dependencies]
+anyhow = { version = "1.0.89", default-features = false, optional = true }
 askama = { version = "0.12.1", default-features = false, optional = true }
 config = { version = "0.14.0", default-features = false, optional = true }
 serde = { version = "1.0.210", default-features = false, optional = true }
 serde_json = { version = "1.0.128", default-features = false, optional = true }
 log = { version = "0.4.22", default-features = false, optional = true }
+log4rs = { version = "1.3.0", default-features = false, optional = true }
 envmnt = { version = "0.10.4", default-features = false, optional = true }
 itertools = { version = "0.13.0", default-features = false, optional = true }
 slugify = { version = "0.1.0", default-features = false, optional = true }
@@ -40,6 +42,7 @@ full = [
     "file-async",
     "askama_filters",
     "worker",
+    "string-logger",
 ]
 default = []
 macros = [
@@ -70,6 +73,7 @@ file = ["enable-serde_json"]
 file-async = ["enable-toko-fs"]
 askama_filters = ["enable-askama"]
 worker = ["enable-worker"]
+string-logger = ["log", "string", "dep:log4rs", "dep:anyhow"]
 
 enable-serde = ["serde/derive"]
 enable-toko-fs = ["tokio/fs"]
